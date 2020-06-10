@@ -19,6 +19,25 @@ function GenerateMap()
     accessToken: MBAPI_KEY
   }).addTo(mapboxMap);
 
+  // Create bottom left leaflet legend
+  let legend = L.control({position: 'bottomleft'});
+
+  legend.onAdd = function(map) {
+    let div = L.DomUtil.create('div', 'info legend'),
+      grades = [0, 1, 2, 3, 4, 5, 6, 7],
+      labels = ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7+"];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+          '<i style="background:' + GetColor(grades[i]) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+  };
+  legend.addTo(mapboxMap);
+
   return mapboxMap;
 } 
 
