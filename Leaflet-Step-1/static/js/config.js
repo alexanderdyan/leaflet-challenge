@@ -1,0 +1,1 @@
+const MBAPI_KEY="pk.eyJ1IjoiYWxleGFuZGVyZHlhbiIsImEiOiJja2FvczNybWkwOTNrMnhxcnh5b2Q2MmJoIn0.rTvB7Y1fMyflpiWRxRGc6A";
