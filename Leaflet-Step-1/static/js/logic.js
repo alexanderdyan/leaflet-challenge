@@ -28,8 +28,8 @@ function CreateFeatures(geoJson, map) {
     return new L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
       radius: feature.properties.mag * 2,
       fillOpacity: 0.8,
-      color: "white",
-      fillColor: "white"
+      color: GetColor(feature.properties.mag),
+      fillColor: GetColor(feature.properties.mag)
     });
   }
 
@@ -59,3 +59,12 @@ d3.json(geoData, function(data) {
   CreateFeatures(data, mapBoxMap);
   
 });
+
+
+function GetColor(magnitude) {
+  // up to magnitude 7, anything higher uses red
+  var colors = ["lightgreen","green", "darkgreen", "lightblue", "blue", "darkblue", "orange", "red"]
+
+  var mag = Math.min(Math.floor(magnitude), colors.length - 1);
+  return colors[mag];
+};
