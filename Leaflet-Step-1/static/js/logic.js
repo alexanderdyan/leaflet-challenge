@@ -22,6 +22,32 @@ function GenerateMap()
   return mapboxMap;
 } 
 
+function CreateFeatures(geoJson, map) {
+
+  function onEachLayer(feature) {
+    return new L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
+      radius: feature.properties.mag * 2,
+      fillOpacity: 0.8,
+      color: "white",
+      fillColor: "white"
+    });
+  }
+
+  // Define a function we want to run once for each feature in the features array
+  // Give each feature a popup describing the place and time of the earthquake
+  function onEachFeature(feature, layer) {
+    layer.bindPopup("<h3>" + feature.properties.place +
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p><hr><p>" + feature.properties.mag + "</p>");
+  }
+
+  // Create a GeoJSON layer containing the features array on the earthquakeData object
+  // Run the onEachFeature function once for each piece of data in the array
+  var earthquakes = L.geoJSON(geoJson, {
+    onEachFeature: onEachFeature,
+    pointToLayer: onEachLayer
+  }).addTo(map);
+}
+
 // Load in geojson data
 var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson";
 
@@ -29,5 +55,7 @@ var mapBoxMap = GenerateMap();
 
 // Grab data with d3
 d3.json(geoData, function(data) {
-  console.log(data);  
+  console.log(data);
+  CreateFeatures(data, mapBoxMap);
+  
 });
